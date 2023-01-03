@@ -5,6 +5,11 @@ networks:
     ipam:
       config:
         - subnet: 172.24.0.0/24
+
+# consider use this version on the pipeline
+#  <your_network_name>:
+#    name: <your_network_name>
+#    external: true
 services:
   lambdas:
     build:
