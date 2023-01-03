@@ -1,0 +1,28 @@
+{
+  "port": 4572,
+  "protocol": "http",
+  "recordRequests": true,
+  "loglevel": "debug",
+  "stubs": [
+    {
+      "predicates": [
+        {
+          "equals": {
+            "method": "GET"
+          }
+        }
+      ],
+      "responses": [
+        {
+          "is": {
+            "statusCode": 200,
+            "body": {
+              "id": 1,
+              "name": "John"
+            }
+          }
+        }
+      ]
+    }
+  ]
+}

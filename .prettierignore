@@ -1,0 +1,11 @@
+.vscode/
+.nyc_output/
+build/
+cdk.out/
+coverage/
+.venv
+.gitlab-ci.yml
+cdk.json
+package.json
+package-lock.json
+junit.xml

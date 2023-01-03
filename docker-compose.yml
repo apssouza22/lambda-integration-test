@@ -1,0 +1,51 @@
+version: '3'
+networks:
+  net:
+    driver: bridge
+    ipam:
+      config:
+        - subnet: 172.24.0.0/24
+services:
+  lambdas:
+    build:
+      context: ./
+      dockerfile: Dockerfile
+    image: myapp-lambda:local
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+    entrypoint: sam local start-api  --host 0.0.0.0 --port 3000 --docker-volume-basedir /Users/alexsouza/projects/work/lambada/cdk.out --container-host host.docker.internal --docker-network lambda-integration-test_net
+    #    environment:
+    #      - SAM_CLI_CONTAINER_CONNECTION_TIMEOUT=300
+    ports:
+      - '3001:3001'
+      - '3000:3000'
+    networks:
+      - net
+  mb:
+    image: bbyars/mountebank:2.8.1
+    hostname: mb
+    container_name: mock-server
+#    entrypoint: mb start
+    volumes:
+      - ./testing/integration/mockfiles/:/templates/
+    entrypoint: mb start --configfile /templates/imposters.json --allowInjection
+    networks:
+      - net
+    ports:
+      - '2525:2525'
+      - '4545:4545'
+      - '5555:5555'
+#
+  integration-test:
+    image: curlimages/curl:7.73.0
+    depends_on:
+      - lambdas
+      - mb
+    networks:
+      - net
+    volumes:
+      - .:/app
+    entrypoint: "curl -L 'http://lambdas:3000/lambada2'"
+
+  dockerize:
+    image: dockerize:0.6.0
