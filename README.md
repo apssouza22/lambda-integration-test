@@ -14,5 +14,4 @@ The API Gateway and the lambda function run on AWS SAM. The dependencies are stu
 All the services and their integration are orchestrated with docker-compose.
 
 ## Integration test with SAM
-- `cdk synth --no-staging`
 - `testing/integration/run-integration-test.sh` to run integration tests
